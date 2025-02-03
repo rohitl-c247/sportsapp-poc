@@ -34,7 +34,7 @@ const Login = () => {
         // If no validation errors, make API request
         try {
           const response = await axios.post(
-            "http://localhost:8000/api/v1/auth/login",  // Replace with your login API endpoint
+            `${baseURL}/auth/login`,  // Replace with your login API endpoint
             {
               email: email,
               password: password,

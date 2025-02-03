@@ -126,7 +126,7 @@ const Hero = () => {
 
                   {/* Image */}
                   <img
-                    src={`http://localhost:8000/${file.path[0].replace(
+                    src={`https://sparkly-peony-393e93.netlify.app/${file.path[0].replace(
                       /^public\//,
                       ""
                     )}`}

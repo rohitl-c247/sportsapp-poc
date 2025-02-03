@@ -22,6 +22,7 @@ const coaches = [
 
 const WebsiteBuilder = () => {
   const [errors, setErrors] = useState("");
+  const [templateId, setTemplateId] = useState();
   const editorRef = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
@@ -44,16 +45,30 @@ const WebsiteBuilder = () => {
         cssContent: editor.getCss(),
       };
       try {
-        const response = await axios.put(
-          `${baseURL}/template/67a0d72b9d98563a856b149b`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        console.log(templateId);
+        if (templateId && templateId!==null && templateId!==undefined){
+          const response = await axios.put(
+            `${baseURL}/template/${templateId}`,
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } else {
+          const response = await axios.post(
+            `${baseURL}/template`,
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        }
       } catch (error) {
         console.error("Error updating template:", error);
       }
@@ -74,6 +89,7 @@ const WebsiteBuilder = () => {
           "savedCSS",
           response.data.data.templates[0].cssContent
         );
+        setTemplateId(response.data.data.templates[0]._id);
         editor.setComponents(localStorage.getItem("savedHTML") || "");
         editor.setStyle(localStorage.getItem("savedCSS") || "");
         setErrors("Design Loaded.");

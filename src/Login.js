@@ -6,6 +6,8 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
+    const baseURL = process.env.REACT_APP_BASEURL;
+
     const navigate = useNavigate();
     // Handle input changes
     const handleChange = (e) => {

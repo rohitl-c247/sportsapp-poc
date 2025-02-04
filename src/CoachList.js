@@ -82,9 +82,9 @@ const CoachList = () => {
           key={index}
           className="flex items-center justify-between rounded-lg relative coach-list-wrapper"
         >
-          <div className="flex items-center flex-grow ">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             {/* Image on the Left */}
-            <div className="w-1/2 ">
+            <div className="">
               <div className="flex items-center p-8 coach-image-block">
                 <img src={frame} className="frame-image" />
                 <img
@@ -97,7 +97,7 @@ const CoachList = () => {
               </div>
             </div>
             {/* Details on the Right */}
-            <div className="w-1/2">
+            <div className="flex items-center justify-center">
               <div className="coach-details">
                 <h2 className="text-8xl font-semibold pb-4">{coach.name}</h2>
                 <p className="text-gray-600 text-sm/8 text-2xl">

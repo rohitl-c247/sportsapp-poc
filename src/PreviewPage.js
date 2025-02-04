@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
+import axios from "axios";
 
 import Hero from "./Hero";
 import CoachList from "./CoachList";
 import EventCalendar from "./EventCalendar";
-import axios from "axios";
+import logo from "./images/logo.png"
+
+import "./App.css";
 const baseURL = process.env.REACT_APP_BASEURL;
 
 const PreviewPage = () => {
@@ -64,10 +67,18 @@ const PreviewPage = () => {
   }, [isContentLoaded]);
 
   return (
-    <div
-      dangerouslySetInnerHTML={{ __html: content }}
-      style={{ width: "100%", minHeight: "100vh" }}
-    />
+    <div className="template-wrapper">
+      <div className="header container mx-auto p-4 flex justify-between items-center bg-white">
+        <div className="logo">
+          <img src={logo} alt="Logo" />
+        </div>
+      </div>
+      <div
+        dangerouslySetInnerHTML={{ __html: content }}
+        style={{ width: "100%", minHeight: "100vh" }}
+        className="container mx-auto"
+      />
+    </div>
   );
 };
 

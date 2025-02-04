@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import calendarFrame from "./images/calender.png"
 
 const EventCalendar = () => {
   const [events, setEvents] = useState([]);
@@ -83,15 +84,15 @@ const EventCalendar = () => {
     <>
       <div className="grid grid-cols-2 gap-6 p-6 max-w-7xl mx-auto">
         <div className="md:w-1/2">
-          <h6 className="center text-2xl font-bold mb-4">All the events</h6>
+          <h6 className="center text-4xl mb-10 pb-4 font-lobster">All the events</h6>
           <div>
             {events.map((event, index) => (
               <div
                 key={index}
-                className="p-4 bg-blue-100 rounded-lg flex justify-between items-center mb-4"
+                className="p-4 flex justify-between items-center mb-6 shadow-lg border-2 border-gray-200 rounded-lg"
               >
                 <div>
-                  <h3 className="text-lg font-semibold">{event.title}</h3>
+                  <h3 className="text-2xl font-semibold pb-3">{event.title}</h3>
                   <p className="text-gray-600">Date: {event.eventDate}</p>
                 </div>
                 {token && token != null && (
@@ -132,7 +133,12 @@ const EventCalendar = () => {
           </div>
         </div>
         <div className="md:w-1/2">
-          <Calendar onChange={onChange} value={value} />
+          <div className="calendar-wrapper">
+            <img src={calendarFrame} className="calendar-frame position-relative" />
+            <div className="calendar-container">
+              <Calendar onChange={onChange} value={value} />
+            </div>
+          </div>
         </div>
       </div>
 

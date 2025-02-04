@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import frame from "./images/profile-frame.png"
+
 const CoachList = () => {
   const [coaches, setCoaches] = useState([]);
   const [showModal, setShowModal] = useState(false); // For toggling modal visibility
@@ -73,24 +75,36 @@ const CoachList = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      <h6 className="center text-2xl font-bold mb-4">All the Coaches</h6>
+    <div className="mx-auto">
+      {/* <h6 className="center text-2xl font-bold mb-4">All the Coaches</h6> */}
       {coaches.map((coach, index) => (
         <div
           key={index}
-          className="flex items-center justify-between bg-gray-200 p-6 rounded-lg shadow-md relative"
+          className="flex items-center justify-between rounded-lg relative coach-list-wrapper"
         >
-          <div className="flex items-center flex-grow">
+          <div className="flex items-center flex-grow sm:flex-col md:flex-row lg:flex-row">
             {/* Image on the Left */}
-            <img
-              src={coach.picture}
-              className="w-24 h-24 square rounded-lg object-cover mr-6"
-              alt={coach.name}
-            />
+            <div className="sm:w-full md:w-1/2 lg:w-1/2">
+              <div className="flex items-center p-8 coach-image-block">
+                <img src={frame} className="frame-image" />
+                <img
+                  src={coach.picture}
+                  className="square rounded-lg object-cover mx-auto coach-image"
+                  alt={coach.name}
+                  width={500}
+                  height={500}
+                />
+              </div>
+            </div>
             {/* Details on the Right */}
-            <div className="ml-6">
-              <h3 className="text-xl font-semibold">{coach.name}</h3>
-              <p className="text-gray-600">{coach.description}</p>
+            <div className="sm:w-full md:w-1/2 lg:w-1/2">
+              <div className="coach-details">
+                <h2 className="text-8xl font-semibold pb-4">{coach.name}</h2>
+                <p className="text-gray-600 text-sm/8 text-2xl">
+                  {coach.description}
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+                </p>
+              </div>
             </div>
           </div>
 

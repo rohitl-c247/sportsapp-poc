@@ -90,9 +90,9 @@ const Hero = () => {
 
       {/* Carousel Container */}
       {!loading && images.length > 0 && (
-        <div className="relative w-full">
+        <div className="relative w-full bg-white">
           {/* Carousel Wrapper */}
-          <div className="relative h-80 overflow-hidden rounded-lg md:h-96">
+          <div className="relative overflow-hidden rounded-lg h-120 hero-carousel-wrapper">
             {images.map((file, index) => (
               <>
                 <div
@@ -175,8 +175,8 @@ const Hero = () => {
         </div>
       )}
       {token && token != null && (
-        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg ">
-          <div key="btn" className="p-4 rounded-lg">
+        <div className="max-w-3xl mx-auto bg-white p-2 ">
+          <div key="btn" className="">
             <button
               onClick={triggerFileInput}
               type="button"

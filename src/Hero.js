@@ -126,10 +126,7 @@ const Hero = () => {
 
                   {/* Image */}
                   <img
-                    src={`https://sparkly-peony-393e93.netlify.app/${file.path[0].replace(
-                      /^public\//,
-                      ""
-                    )}`}
+                    src={`https://sparkly-peony-393e93.netlify.app/${file.path[0].replace(/^public\//,"")}`}
                     className="w-full h-full object-cover"
                     alt={`Slide ${index + 1}`}
                   />

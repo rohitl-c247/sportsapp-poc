@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 
 const EventCalendar = () => {
   const [events, setEvents] = useState([]);
+  const [filterevents, setFilterEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newEvent, setNewEvent] = useState({ title: "", eventDate: "" });
   const [error, setError] = useState("");
@@ -16,6 +17,27 @@ const EventCalendar = () => {
     fetchEvents();
   }, []);
 
+  useEffect(() => {
+    filterEvents();
+  }, [value]);
+
+  const filterEvents = async () => {
+    if (!value) return;
+  
+    // Convert selected date to 'YYYY-MM-DD' format
+    const formatDate = (date) => {
+      return new Date(date).toISOString().split("T")[0]; // Extracts only YYYY-MM-DD
+    };
+  
+    // Filter events based on the formatted date
+    const filteredEvents = events.filter(
+      (event) => formatDate(event.eventDate) === formatDate(value)
+    );
+  
+    setFilterEvents(filteredEvents);
+  };
+  
+  
   const fetchEvents = async () => {
     try {
       const response = await axios.get(`${baseURL}/events`, {
@@ -24,7 +46,8 @@ const EventCalendar = () => {
         },
       }); // Replace with your API endpoint
       setEvents(response.data.data.events);
-      console.log(response.data.data);
+      setFilterEvents(response.data.data.events);
+
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -85,7 +108,7 @@ const EventCalendar = () => {
         <div className="md:w-1/2">
           <h6 className="center text-2xl font-bold mb-4">All the events</h6>
           <div>
-            {events.map((event, index) => (
+            {filterevents.map((event, index) => (
               <div
                 key={index}
                 className="p-4 bg-blue-100 rounded-lg flex justify-between items-center mb-4"
@@ -132,7 +155,7 @@ const EventCalendar = () => {
           </div>
         </div>
         <div className="md:w-1/2">
-          <Calendar onChange={onChange} value={value} />
+          <Calendar onClickDay={(value, event)=>(console.log(value))} onChange={onChange} value={value} />
         </div>
       </div>
 

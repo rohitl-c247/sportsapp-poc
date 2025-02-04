@@ -24,21 +24,21 @@ const EventCalendar = () => {
 
   const filterEvents = async () => {
     if (!value) return;
-  
+
     // Convert selected date to 'YYYY-MM-DD' format
     const formatDate = (date) => {
       return new Date(date).toISOString().split("T")[0]; // Extracts only YYYY-MM-DD
     };
-  
+
     // Filter events based on the formatted date
     const filteredEvents = events.filter(
       (event) => formatDate(event.eventDate) === formatDate(value)
     );
-  
+
     setFilterEvents(filteredEvents);
   };
-  
-  
+
+
   const fetchEvents = async () => {
     try {
       const response = await axios.get(`${baseURL}/events`, {
@@ -106,23 +106,33 @@ const EventCalendar = () => {
   return (
     <>
       <div className="grid grid-cols-2 gap-6 p-6 max-w-7xl mx-auto">
-        <div className="md:w-1/2">
+        <div className="">
           <h6 className="center text-4xl mb-10 pb-4 font-lobster">All the events</h6>
           <div>
-            {filterevents.map((event, index) => (
+            {filterevents.length > 0 ? filterevents.map((event, index) => (
               <div
                 key={index}
-                className="p-4 flex justify-between items-center mb-6 shadow-lg border-2 border-gray-200 rounded-lg"
+                className="p-4 flex items-center mb-6 shadow-lg border-2 border-gray-200 rounded-lg position-relative"
               >
-                <div>
-                  <h3 className="text-2xl font-semibold pb-3">{event.title}</h3>
-                  <p className="text-gray-600">Date: {event.eventDate}</p>
+                <div className="w-full flex">
+                  <div className="flex flex-col bg-gray-100 p-4 justify-center">
+                    <span className="text-2xl font-semibold pb-3">
+                      {new Date(event.eventDate).toLocaleDateString('en-US', { day: 'numeric' })}
+                    </span>
+                    <span>
+                      {new Date(event.eventDate).toLocaleDateString('en-US', { month: 'short', })}
+                    </span>
+                  </div>
+                  <div className="pl-5">
+                    <h3 className="text-2xl font-semibold pb-3">{event.title}</h3>
+                    <p className="text-gray-600">Date: {event.eventDate}</p>
+                  </div>
                 </div>
                 {token && token != null && (
                   <button
                     type="button"
                     onClick={() => deleteEvent(event._id)}
-                    className="text-red-600 hover:text-red-800 p-2"
+                    className="text-red-600 hover:text-red-800 p-2 "
                     title="Delete event"
                   >
                     <svg
@@ -140,7 +150,7 @@ const EventCalendar = () => {
                   </button>
                 )}
               </div>
-            ))}
+            )) : <div className="text-center text-gray-500">No events for this date</div>}
 
             {token && token != null && (
               <div key={`btn`}>
@@ -155,14 +165,14 @@ const EventCalendar = () => {
             )}
           </div>
         </div>
-        <div className="md:w-1/2">
+        <div className="">
           <div className="calendar-wrapper">
             <img src={calendarFrame} className="calendar-frame position-relative" />
             <div className="calendar-container">
-              <Calendar onChange={onChange} value={value} />
+              <Calendar onClickDay={(value, event) => (console.log(value))} onChange={onChange} value={value} />
             </div>
           </div>
-          <Calendar onClickDay={(value, event)=>(console.log(value))} onChange={onChange} value={value} />
+
         </div>
       </div>
 

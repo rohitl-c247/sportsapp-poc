@@ -178,7 +178,7 @@ const Hero = () => {
           {/* Previous Button */}
           <button
             onClick={prevSlide}
-            className="h-10 w-10 bg-white rounded-full top-1/2 absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            className="h-10 w-10 bg-white rounded-full top-1/2 absolute top-0 left-0 z-30 flex items-center justify-center px-4 cursor-pointer group focus:outline-none"
           >
             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50">
               ❮
@@ -188,7 +188,7 @@ const Hero = () => {
           {/* Next Button */}
           <button
             onClick={nextSlide}
-            className="h-10 w-10 bg-white rounded-full top-1/2 absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            className="h-10 w-10 bg-white rounded-full top-1/2 absolute top-0 right-0 z-30 flex items-center justify-center px-4 cursor-pointer group focus:outline-none"
           >
             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50">
               ❯

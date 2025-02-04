@@ -105,7 +105,9 @@ const EventCalendar = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-6 p-6 max-w-7xl mx-auto">
+      {/* <div className="grid grid-cols-2 gap-6 p-6 max-w-7xl mx-auto"> */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 max-w-7xl mx-auto">
+
         <div className="md:w-1/2">
           <h6 className="center text-4xl mb-10 pb-4 font-lobster">All the events</h6>
           <div>

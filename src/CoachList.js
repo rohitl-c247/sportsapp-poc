@@ -80,9 +80,9 @@ const CoachList = () => {
       {coaches.map((coach, index) => (
         <div
           key={index}
-          className="flex items-center justify-between rounded-lg relative coach-list-wrapper"
+          className="flex flex-col sm:flex-col md:flex-row lg:flex-row items-center justify-between rounded-lg relative coach-list-wrapper"
         >
-          <div className="flex items-center flex-grow sm:flex-col md:flex-row lg:flex-row">
+          <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row items-center flex-grow w-full">
             {/* Image on the Left */}
             <div className="sm:w-full md:w-1/2 lg:w-1/2">
               <div className="flex items-center p-8 coach-image-block">

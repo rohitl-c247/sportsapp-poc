@@ -6,6 +6,7 @@ import calendarFrame from "./images/calender.png"
 
 const EventCalendar = () => {
   const [events, setEvents] = useState([]);
+  const [filterevents, setFilterEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newEvent, setNewEvent] = useState({ title: "", eventDate: "" });
   const [error, setError] = useState("");
@@ -17,6 +18,27 @@ const EventCalendar = () => {
     fetchEvents();
   }, []);
 
+  useEffect(() => {
+    filterEvents();
+  }, [value]);
+
+  const filterEvents = async () => {
+    if (!value) return;
+  
+    // Convert selected date to 'YYYY-MM-DD' format
+    const formatDate = (date) => {
+      return new Date(date).toISOString().split("T")[0]; // Extracts only YYYY-MM-DD
+    };
+  
+    // Filter events based on the formatted date
+    const filteredEvents = events.filter(
+      (event) => formatDate(event.eventDate) === formatDate(value)
+    );
+  
+    setFilterEvents(filteredEvents);
+  };
+  
+  
   const fetchEvents = async () => {
     try {
       const response = await axios.get(`${baseURL}/events`, {
@@ -25,7 +47,8 @@ const EventCalendar = () => {
         },
       }); // Replace with your API endpoint
       setEvents(response.data.data.events);
-      console.log(response.data.data);
+      setFilterEvents(response.data.data.events);
+
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -86,7 +109,7 @@ const EventCalendar = () => {
         <div className="md:w-1/2">
           <h6 className="center text-4xl mb-10 pb-4 font-lobster">All the events</h6>
           <div>
-            {events.map((event, index) => (
+            {filterevents.map((event, index) => (
               <div
                 key={index}
                 className="p-4 flex justify-between items-center mb-6 shadow-lg border-2 border-gray-200 rounded-lg"
@@ -139,6 +162,7 @@ const EventCalendar = () => {
               <Calendar onChange={onChange} value={value} />
             </div>
           </div>
+          <Calendar onClickDay={(value, event)=>(console.log(value))} onChange={onChange} value={value} />
         </div>
       </div>
 

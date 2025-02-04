@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { storage } from './firebase'; // Adjust path as needed
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 const Hero = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,6 +9,22 @@ const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const token = localStorage.getItem("token");
   const baseURL = process.env.REACT_APP_BASEURL;
+
+  const uploadBase64Image = async (base64Image) => {
+    try {
+      // Remove the data URL prefix
+      const base64String = base64Image.split(',')[1];
+      const blob = await fetch(`data:image/jpeg;base64,${base64String}`).then(res => res.blob());
+      // Create a storage reference
+      const storageRef = ref(storage, `images/event_${Date.now()}.jpg`);
+      // Upload the file to Firebase Storage
+      const snapshot = await uploadBytes(storageRef, blob);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      return downloadURL; // Return the download URL if needed
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
 
   const fetchImages = async () => {
     setLoading(true);
@@ -63,17 +80,27 @@ const Hero = () => {
   };
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("fileUpload", file);
-
+      if (file) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async function () {
+          const base64String = reader.result;
+          const newImageUrl = await uploadBase64Image(base64String);
+          console.log(newImageUrl);
+          // const formData = new FormData();
+          // formData.append("fileUpload", newImageUrl);
+          await axios.post(`${baseURL}/local-files`, { uploadfFile: newImageUrl }, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          await fetchImages();
+        };
+        reader.onerror = function (error) {
+          console.error("Error converting file to base64:", error);
+        };
       try {
-        const response = await axios.post(`${baseURL}/local-files`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        await fetchImages();
+
       } catch (error) {
         console.error("Error uploading the file:", error);
       }
@@ -97,9 +124,8 @@ const Hero = () => {
               <>
                 <div
                   key={index}
-                  className={`absolute w-full h-full transition-opacity duration-700 ease-in-out ${
-                    index === activeIndex ? "opacity-100" : "opacity-0"
-                  } ${index === activeIndex ? "z-1" : "z-0"}`} // Ensure only the active slide is on top
+                  className={`absolute w-full h-full transition-opacity duration-700 ease-in-out ${index === activeIndex ? "opacity-100" : "opacity-0"
+                    } ${index === activeIndex ? "z-1" : "z-0"}`} // Ensure only the active slide is on top
                 >
                   {/* Delete Button */}
                   {token && token != null && (
@@ -126,7 +152,7 @@ const Hero = () => {
 
                   {/* Image */}
                   <img
-                    src={`https://sparkly-peony-393e93.netlify.app/${file.path[0].replace(/^public\//,"")}`}
+                    src={`${file.path[0]}`}
                     className="w-full h-full object-cover"
                     alt={`Slide ${index + 1}`}
                   />
@@ -143,9 +169,8 @@ const Hero = () => {
                 <button
                   key={i}
                   onClick={() => setActiveIndex(i)}
-                  className={`w-3 h-3 rounded-full ${
-                    i === activeIndex ? "bg-blue-500" : "bg-gray-300"
-                  }`}
+                  className={`w-3 h-3 rounded-full ${i === activeIndex ? "bg-blue-500" : "bg-gray-300"
+                    }`}
                 ></button>
               ))}
           </div>
